@@ -1,0 +1,44 @@
+identity:
+  name: crawl_website
+  author: olostep
+  label:
+    en_US: Crawl Website
+description:
+  human:
+    en_US: Crawl a website from a start URL and get the markdown of each page.
+  llm: Crawl a website starting from a URL, following its links, and return the markdown content of each page found. Use this when you need content from many pages of one site.
+parameters:
+  - name: url
+    type: string
+    required: true
+    label:
+      en_US: Start URL
+    human_description:
+      en_US: The page to start crawling from, for example https://docs.olostep.com.
+    llm_description: The full http(s) URL to start crawling from.
+    form: llm
+  - name: max_pages
+    type: number
+    required: false
+    default: 10
+    min: 1
+    max: 100
+    label:
+      en_US: Maximum pages
+    human_description:
+      en_US: The maximum number of pages to crawl (1 to 100).
+    form: form
+  - name: max_wait_seconds
+    type: number
+    required: false
+    default: 120
+    min: 0
+    max: 240
+    label:
+      en_US: Wait for results (seconds)
+    human_description:
+      en_US: How long to wait for the crawl to finish. If it is still running, the tool returns its id so you can get the pages later with Get Results.
+    form: form
+extra:
+  python:
+    source: tools/crawl_website.py

@@ -1,0 +1,22 @@
+identity:
+  name: answer_question
+  author: olostep
+  label:
+    en_US: Answer Question
+description:
+  human:
+    en_US: Answer a question from the live web, with source URLs.
+  llm: Search the live web and answer a question, returning the answer and the source URLs it is based on. Use this for factual questions that need current information.
+parameters:
+  - name: task
+    type: string
+    required: true
+    label:
+      en_US: Question
+    human_description:
+      en_US: The question to answer, for example "What is the latest stable version of Next.js?"
+    llm_description: The question to answer from the live web.
+    form: llm
+extra:
+  python:
+    source: tools/answer_question.py

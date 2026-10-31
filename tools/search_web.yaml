@@ -1,0 +1,33 @@
+identity:
+  name: search_web
+  author: olostep
+  label:
+    en_US: Search Web
+description:
+  human:
+    en_US: Search the live web and get result titles, URLs and descriptions.
+  llm: Search the live web for a query. Returns a list of results with title, URL and description. Use this to find pages about a topic, then scrape the most relevant ones.
+parameters:
+  - name: query
+    type: string
+    required: true
+    label:
+      en_US: Query
+    human_description:
+      en_US: What to search for.
+    llm_description: The search query.
+    form: llm
+  - name: limit
+    type: number
+    required: false
+    default: 10
+    min: 1
+    max: 50
+    label:
+      en_US: Number of results
+    human_description:
+      en_US: How many results to return (1 to 50).
+    form: form
+extra:
+  python:
+    source: tools/search_web.py

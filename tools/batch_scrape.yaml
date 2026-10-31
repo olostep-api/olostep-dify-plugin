@@ -1,0 +1,33 @@
+identity:
+  name: batch_scrape
+  author: olostep
+  label:
+    en_US: Batch Scrape
+description:
+  human:
+    en_US: Scrape a list of URLs in one batch and get the markdown of each page.
+  llm: Scrape many URLs in one batch and return the markdown content of each page. Use this instead of calling Scrape URL many times.
+parameters:
+  - name: urls
+    type: string
+    required: true
+    label:
+      en_US: URLs
+    human_description:
+      en_US: Up to 100 URLs, one per line or separated by commas.
+    llm_description: The http(s) URLs to scrape, separated by newlines or commas. Up to 100 URLs.
+    form: llm
+  - name: max_wait_seconds
+    type: number
+    required: false
+    default: 120
+    min: 0
+    max: 240
+    label:
+      en_US: Wait for results (seconds)
+    human_description:
+      en_US: How long to wait for the batch to finish. If it is still running, the tool returns its id so you can get the pages later with Get Results.
+    form: form
+extra:
+  python:
+    source: tools/batch_scrape.py

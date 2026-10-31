@@ -1,0 +1,22 @@
+identity:
+  name: scrape_url
+  author: olostep
+  label:
+    en_US: Scrape URL
+description:
+  human:
+    en_US: Scrape a web page and get its content as clean markdown. JavaScript rendering is included.
+  llm: Scrape a single web page and return its main content as clean markdown. Use this when you have a URL and need its content.
+parameters:
+  - name: url
+    type: string
+    required: true
+    label:
+      en_US: URL
+    human_description:
+      en_US: The full URL of the page to scrape, for example https://example.com/pricing.
+    llm_description: The full http(s) URL of the page to scrape.
+    form: llm
+extra:
+  python:
+    source: tools/scrape_url.py

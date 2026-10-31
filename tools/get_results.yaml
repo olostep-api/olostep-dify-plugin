@@ -1,0 +1,22 @@
+identity:
+  name: get_results
+  author: olostep
+  label:
+    en_US: Get Results
+description:
+  human:
+    en_US: Get the pages of a crawl or batch that was still running when Crawl Website or Batch Scrape returned.
+  llm: Get the markdown pages of a crawl or batch by its id (crawl_... or batch_...). Use this when Crawl Website or Batch Scrape returned status in_progress.
+parameters:
+  - name: id
+    type: string
+    required: true
+    label:
+      en_US: Crawl or batch id
+    human_description:
+      en_US: The id returned by Crawl Website or Batch Scrape, for example crawl_abc123.
+    llm_description: The crawl or batch id, starting with crawl_ or batch_.
+    form: llm
+extra:
+  python:
+    source: tools/get_results.py

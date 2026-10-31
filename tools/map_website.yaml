@@ -1,0 +1,33 @@
+identity:
+  name: map_website
+  author: olostep
+  label:
+    en_US: Map Website
+description:
+  human:
+    en_US: List the URLs on a website.
+  llm: List the URLs found on a website. Use this to discover pages before scraping or crawling them.
+parameters:
+  - name: url
+    type: string
+    required: true
+    label:
+      en_US: Website URL
+    human_description:
+      en_US: The website to map, for example https://docs.olostep.com.
+    llm_description: The full http(s) URL of the website to map.
+    form: llm
+  - name: top_n
+    type: number
+    required: false
+    default: 100
+    min: 1
+    max: 1000
+    label:
+      en_US: Maximum URLs
+    human_description:
+      en_US: The maximum number of URLs to return (1 to 1000).
+    form: form
+extra:
+  python:
+    source: tools/map_website.py
