@@ -22,11 +22,11 @@ parameters:
     required: false
     default: 100
     min: 1
-    max: 1000
+    max: 100000
     label:
       en_US: Maximum URLs
     human_description:
-      en_US: The maximum number of URLs to return (1 to 1000).
+      en_US: The maximum number of URLs to return (1 to 100k).
     form: form
 extra:
   python:

@@ -22,11 +22,11 @@ parameters:
     required: false
     default: 10
     min: 1
-    max: 100
+    max: 100000
     label:
       en_US: Maximum pages
     human_description:
-      en_US: The maximum number of pages to crawl (1 to 100).
+      en_US: The maximum number of pages to crawl (1 to 100k).
     form: form
   - name: max_wait_seconds
     type: number

@@ -4,7 +4,7 @@ identity:
   label:
     en_US: Olostep
   description:
-    en_US: Live web search, scraping and crawling for AI. Get structured, LLM-ready data from any site.
+    en_US: Web data infrastructure for developers and enterprises. The most performant, reliable and cost-effective API for live web search, scraping and crawling, used by the fastest-growing AI companies.
   icon: icon.png
   tags:
     - search

@@ -20,7 +20,10 @@ def as_text(result: dict) -> str:
     """Readable text for agents, next to the JSON output for workflows."""
     if "pages" in result:
         sections = [f"## {page['url']}\n\n{page.get('markdown') or page.get('error') or ''}" for page in result["pages"]]
-        return "\n\n".join(sections) or "No pages were returned."
+        text = "\n\n".join(sections) or "No pages were returned."
+        if result.get("next_cursor") is not None:
+            text += f"\n\n{result['message']} id: {result['id']}, next_cursor: {result['next_cursor']}"
+        return text
     if result.get("markdown"):
         return result["markdown"]
     return json.dumps(result, ensure_ascii=False, indent=2)

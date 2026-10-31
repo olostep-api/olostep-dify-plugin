@@ -15,6 +15,7 @@ RETRY_STATUSES = (429, 500, 502, 503, 504)
 ATTEMPTS = 3
 POLL_SECONDS = 10
 PAGE_SIZE = 50
+RESULTS_PER_CALL = 100
 RETRIEVE_WORKERS = 8
 USER_AGENT = "olostep-dify-plugin/0.1.0"
 
@@ -137,16 +138,16 @@ class OlostepClient:
         job = self.request("POST", "batches", body={"items": items})
         return self.finish("batches", job["id"], max_wait)
 
-    def results(self, job_id: str, max_wait: int) -> dict:
+    def results(self, job_id: str, max_wait: int, cursor: str | None = None) -> dict:
         job_id = job_id.strip()
         if job_id.startswith("crawl_"):
-            return self.finish("crawls", job_id, max_wait)
+            return self.finish("crawls", job_id, max_wait, cursor)
         if job_id.startswith("batch_"):
-            return self.finish("batches", job_id, max_wait)
+            return self.finish("batches", job_id, max_wait, cursor)
         raise OlostepError(f"Enter a crawl or batch id, for example crawl_abc123 or batch_abc123 (got {job_id!r}).")
 
-    def finish(self, kind: str, job_id: str, max_wait: int) -> dict:
-        """Waits for a crawl or batch, then returns the markdown of each page."""
+    def finish(self, kind: str, job_id: str, max_wait: int, cursor: str | None = None) -> dict:
+        """Waits for a crawl or batch, then returns up to RESULTS_PER_CALL pages from cursor."""
         info = self.request("GET", f"{kind}/{job_id}")
         waited = 0
         while info.get("status") == "in_progress" and waited < max_wait:
@@ -160,16 +161,19 @@ class OlostepClient:
                 "message": "Still running. Use the Get Results tool with this id in a few minutes.",
             }
         if kind == "batches":
-            items = self._list(f"batches/{job_id}/items", "items", {"status": "completed"})
+            items, next_cursor = self._list(f"batches/{job_id}/items", "items", {"status": "completed"}, cursor)
         else:
-            items = self._list(f"crawls/{job_id}/pages", "pages", {})
+            items, next_cursor = self._list(f"crawls/{job_id}/pages", "pages", {}, cursor)
         with ThreadPoolExecutor(max_workers=RETRIEVE_WORKERS) as pool:
             pages = list(pool.map(self._retrieve, items))
-        return {"id": job_id, "status": info.get("status") or "completed", "pages": pages}
+        result = {"id": job_id, "status": info.get("status") or "completed", "pages": pages}
+        if next_cursor is not None:
+            result["next_cursor"] = next_cursor
+            result["message"] = "More pages are available. Use the Get Results tool with this id and next_cursor."
+        return result
 
-    def _list(self, path: str, key: str, params: dict) -> list[dict]:
+    def _list(self, path: str, key: str, params: dict, cursor: str | None) -> tuple[list[dict], str | None]:
         items: list[dict] = []
-        cursor = None
         while True:
             page_params = {**params, "limit": PAGE_SIZE}
             if cursor is not None:
@@ -178,8 +182,10 @@ class OlostepClient:
             page_items = data.get(key) or []
             items.extend(page_items)
             cursor = data.get("cursor")
-            if not page_items or cursor is None:
-                return items
+            if not page_items:
+                return items, None
+            if cursor is None or len(items) >= RESULTS_PER_CALL:
+                return items, cursor
 
     def _retrieve(self, item: dict) -> dict:
         page = {"url": item.get("url"), "markdown": None}

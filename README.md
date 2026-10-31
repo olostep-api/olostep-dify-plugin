@@ -1,10 +1,19 @@
 # Olostep
 
-Olostep is web data infrastructure for AI. It provides live web search, scraping and crawling API to extract and structure data.
+Olostep is web data infrastructure for AI agents and enterprise AI workflows. Its APIs provide live web search, scraping and crawling to extract, clean and structure data from the web.
 
 This plugin brings Olostep to Dify agents, chatflows and workflows. Scrape any page into clean markdown, search the web, get answers with sources, and map, crawl or batch scrape websites.
 
 Source repository: https://github.com/olostep-api/olostep-dify-plugin
+
+## Why Olostep
+
+- Web data infrastructure for developers and enterprises
+- Scales to hundreds of millions to billions of requests per customer per month
+- The most performant, reliable and cost-effective API on the market
+- Used by the fastest-growing AI companies
+
+From extracting data from a handful of URLs to crawling hundreds of millions of pages, Olostep gives developers and AI companies reliable, scalable and highly cost-effective access to clean, structured web data.
 
 ## Tools
 
@@ -15,8 +24,8 @@ Source repository: https://github.com/olostep-api/olostep-dify-plugin
 | Answer Question | Answer a question from the live web, with source URLs |
 | Map Website | List the URLs on a website |
 | Crawl Website | Crawl a website and return the markdown of each page |
-| Batch Scrape | Scrape up to 100 URLs in one batch and return the markdown of each page |
-| Get Results | Get the pages of a crawl or batch that was still running |
+| Batch Scrape | Scrape up to 100k URLs in one batch and return the markdown of each page |
+| Get Results | Get all the pages of a crawl or batch, 100 at a time |
 
 ## Setup
 
@@ -34,6 +43,10 @@ Example: a research workflow that runs **Search Web** for a topic, then **Batch 
 ### Crawls and batches
 
 Crawl Website and Batch Scrape wait for results for up to 2 minutes by default (configurable up to 4 minutes). If the job is still running, the tool returns its `id` with `status` set to `in_progress`. Pass that id to **Get Results** later to get the pages.
+
+Large jobs return their pages 100 at a time. If more pages are available, the result includes `next_cursor`: pass it to **Get Results** with the `id` to get the next 100, until you have every page.
+
+Batch Scrape takes up to 100k URLs. New accounts are limited to 100 URLs per batch: contact info@olostep.com to lift this.
 
 ## Connection requirements
 

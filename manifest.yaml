@@ -1,11 +1,11 @@
-version: 0.1.0
+version: 0.1.1
 type: plugin
 author: olostep
 name: olostep
 label:
   en_US: Olostep
 description:
-  en_US: Live web search, scraping and crawling for AI. Scrape any page into clean markdown, search the web, get answers with sources, map and crawl websites, and batch scrape URLs.
+  en_US: Web data infrastructure for developers and enterprises. The most performant, reliable and cost-effective API for live web search, scraping and crawling, used by the fastest-growing AI companies. Scales to billions of requests per customer per month.
 icon: icon.png
 tags:
   - search

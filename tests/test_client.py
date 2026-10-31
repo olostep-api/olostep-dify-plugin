@@ -155,3 +155,31 @@ def test_as_text():
     assert as_text({"url": "u", "markdown": "# Hi"}) == "# Hi"
     assert as_text({"pages": [{"url": "u", "markdown": "body"}]}) == "## u\n\nbody"
     assert json.loads(as_text({"query": "q", "results": []})) == {"query": "q", "results": []}
+
+
+def test_large_batch_returns_one_page_of_results_with_cursor():
+    seen = []
+
+    def handler(request):
+        path = request.url.path
+        if path == "/v1/batches/batch_1":
+            return httpx.Response(200, json={"status": "completed"})
+        if path == "/v1/batches/batch_1/items":
+            cursor = int(request.url.params.get("cursor", 0))
+            seen.append(cursor)
+            items = [{"url": f"https://a.com/{cursor + i}", "retrieve_id": "r"} for i in range(50)]
+            return httpx.Response(200, json={"items": items, "cursor": cursor + 50})
+        return httpx.Response(200, json={"markdown_content": "page"})
+
+    first = make_client(handler).results("batch_1", 0)
+    assert len(first["pages"]) == 100
+    assert first["next_cursor"] == 100
+    assert seen == [0, 50]
+
+    second = make_client(handler).results("batch_1", 0, str(first["next_cursor"]))
+    assert second["pages"][0]["url"] == "https://a.com/100"
+
+
+def test_as_text_shows_how_to_get_more_pages():
+    text = as_text({"id": "batch_1", "pages": [], "next_cursor": 100, "message": "More pages."})
+    assert "next_cursor: 100" in text

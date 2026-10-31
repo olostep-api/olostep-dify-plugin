@@ -5,8 +5,8 @@ identity:
     en_US: Batch Scrape
 description:
   human:
-    en_US: Scrape a list of URLs in one batch and get the markdown of each page.
-  llm: Scrape many URLs in one batch and return the markdown content of each page. Use this instead of calling Scrape URL many times.
+    en_US: Scrape up to 100k URLs in one batch and get the markdown of each page.
+  llm: Scrape many URLs in one batch and return the markdown content of each page. Use this instead of calling Scrape URL many times. Returns up to 100 pages per call, with a next_cursor for Get Results when more are available.
 parameters:
   - name: urls
     type: string
@@ -14,8 +14,8 @@ parameters:
     label:
       en_US: URLs
     human_description:
-      en_US: Up to 100 URLs, one per line or separated by commas.
-    llm_description: The http(s) URLs to scrape, separated by newlines or commas. Up to 100 URLs.
+      en_US: Up to 100k URLs, one per line or separated by commas.
+    llm_description: The http(s) URLs to scrape, separated by newlines or commas. Up to 100k URLs.
     form: llm
   - name: max_wait_seconds
     type: number

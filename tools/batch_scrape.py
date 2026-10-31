@@ -7,7 +7,7 @@ from dify_plugin.entities.tool import ToolInvokeMessage
 
 from olostep_client.invoke import respond, to_int
 
-MAX_URLS = 100
+MAX_URLS = 100_000
 
 
 class BatchScrapeTool(Tool):

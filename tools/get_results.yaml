@@ -5,8 +5,8 @@ identity:
     en_US: Get Results
 description:
   human:
-    en_US: Get the pages of a crawl or batch that was still running when Crawl Website or Batch Scrape returned.
-  llm: Get the markdown pages of a crawl or batch by its id (crawl_... or batch_...). Use this when Crawl Website or Batch Scrape returned status in_progress.
+    en_US: Get all the pages of a crawl or batch by its id, 100 at a time.
+  llm: Get the markdown pages of a crawl or batch by its id (crawl_... or batch_...). Use this when Crawl Website or Batch Scrape returned status in_progress or a next_cursor. Returns up to 100 pages per call.
 parameters:
   - name: id
     type: string
@@ -16,6 +16,15 @@ parameters:
     human_description:
       en_US: The id returned by Crawl Website or Batch Scrape, for example crawl_abc123.
     llm_description: The crawl or batch id, starting with crawl_ or batch_.
+    form: llm
+  - name: cursor
+    type: string
+    required: false
+    label:
+      en_US: Cursor
+    human_description:
+      en_US: The next_cursor from a previous result, to get the next pages.
+    llm_description: The next_cursor from a previous result. Leave empty to get the first pages.
     form: llm
 extra:
   python:
