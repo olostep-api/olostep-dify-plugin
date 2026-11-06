@@ -17,7 +17,7 @@ POLL_SECONDS = 10
 PAGE_SIZE = 50
 RESULTS_PER_CALL = 100
 RETRIEVE_WORKERS = 8
-USER_AGENT = "olostep-dify-plugin/0.1.0"
+USER_AGENT = "olostep-dify-plugin/0.1.2"
 
 
 class OlostepError(Exception):
